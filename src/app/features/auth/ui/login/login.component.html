@@ -11,7 +11,7 @@
     <h2 class="auth-card__title">Welcome back</h2>
     <p class="auth-card__subtitle">Enter your mobile number to sign in</p>
 
-    <form class="auth-form" (ngSubmit)="onSendOtp()" novalidate>
+    <div class="auth-form">
       <mat-form-field appearance="outline" class="full-width">
         <mat-label>Mobile Number</mat-label>
         <span matTextPrefix>+91&nbsp;</span>
@@ -25,11 +25,11 @@
         }
       </mat-form-field>
 
-      <button mat-flat-button type="submit" class="full-width cta-btn" [disabled]="!isSendOtpEnabled()"
+      <button mat-flat-button type="button" class="full-width cta-btn" [disabled]="isLoading()" (click)="onSendOtp()"
         aria-label="Send OTP to entered mobile number">
         Send OTP
       </button>
-    </form>
+    </div>
 
     <footer class="auth-footer">
       <span>By continuing, you agree to our</span>

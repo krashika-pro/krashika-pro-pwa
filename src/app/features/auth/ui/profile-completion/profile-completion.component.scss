@@ -1,20 +1,25 @@
 :host {
      display: block;
+     width: 100%;
 }
 
 .profile-page {
      display: flex;
      flex-direction: column;
      min-height: 100dvh;
+     width: 100%;
      background: #fafdf6;
 }
 
 .profile-topbar {
+     position: sticky;
+     top: 0;
+     z-index: 10;
+     background: #fafdf6;
      display: flex;
      align-items: center;
      justify-content: space-between;
      padding: 8px 8px 0;
-     flex-shrink: 0;
 }
 
 .topbar-spacer {
@@ -27,11 +32,11 @@
 }
 
 .profile-content {
-     flex: 1;
-     padding: 8px 16px 48px;
-     max-width: 480px;
+     padding: 8px 16px 32px;
      width: 100%;
+     max-width: 480px;
      margin: 0 auto;
+     box-sizing: border-box;
 }
 
 .profile-hero {
@@ -196,10 +201,13 @@
 .profile-form {
      display: flex;
      flex-direction: column;
+     width: 100%;
 }
 
 .full-width {
      width: 100%;
+     max-width: 100%;
+     box-sizing: border-box;
 }
 
 .cta-btn {

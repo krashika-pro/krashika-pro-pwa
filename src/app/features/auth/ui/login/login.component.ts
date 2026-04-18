@@ -1,7 +1,6 @@
-import { Component, computed, effect, inject } from '@angular/core';
+import { Component, effect, inject } from '@angular/core';
 import { FormControl, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -33,14 +32,6 @@ export class LoginComponent {
 
   readonly isLoading = this.authFacade.isLoading;
 
-  private readonly mobileStatus = toSignal(this.mobileControl.statusChanges, {
-    initialValue: this.mobileControl.status,
-  });
-
-  readonly isSendOtpEnabled = computed(
-    () => !this.isLoading() && this.mobileStatus() === 'VALID',
-  );
-
   constructor() {
     effect(() => {
       const error = this.authFacade.error();
@@ -55,8 +46,6 @@ export class LoginComponent {
   }
 
   async onSendOtp(): Promise<void> {
-    console.log("hi there onSendOtp called with mobile:", this.mobileControl.value);
-    debugger
     if (!this.mobileControl.valid) {
       this.mobileControl.markAsTouched();
       return;
