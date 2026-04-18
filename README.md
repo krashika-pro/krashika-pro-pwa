@@ -36,14 +36,16 @@ Built with **Angular 20**, **SSR**, and **PWA** capabilities for offline-first, 
 
 ## Tech Stack
 
-| Layer     | Technology           |
-| --------- | -------------------- |
-| Framework | Angular 20           |
-| Rendering | SSR (`@angular/ssr`) |
-| Styling   | SCSS                 |
-| Language  | TypeScript           |
-| Runtime   | Node.js + Express 5  |
-| PWA       | Service Workers      |
+| Layer         | Technology             |
+| ------------- | ---------------------- |
+| Framework     | Angular 20             |
+| Rendering     | SSR (`@angular/ssr`)   |
+| UI Components | Angular Material (M3)  |
+| Styling       | SCSS                   |
+| Language      | TypeScript             |
+| Runtime       | Node.js + Express 5    |
+| PWA           | Service Workers (ngsw) |
+| Architecture  | Clean Architecture     |
 
 ## Getting Started
 
@@ -102,18 +104,54 @@ ng test
 - **Security** — Secure authentication, data privacy compliance
 - **Scalability** — Support increasing users and data volume
 
+## Architecture
+
+This project follows **Clean Architecture** with a strict four-layer dependency rule:
+
+```
+UI → Application → Domain → Infrastructure
+```
+
+Dependencies only flow inward. The domain layer is pure TypeScript with no Angular imports.
+
 ## Project Structure
 
 ```
 src/
-├── app/           # Application root (components, routes, config)
-├── main.ts        # Client bootstrap
-├── main.server.ts # Server bootstrap
-├── server.ts      # Express SSR server
-├── styles.scss    # Global styles
-└── index.html     # App shell
+├── app/
+│   ├── features/                    # Lazy-loaded feature modules
+│   │   └── <feature>/
+│   │       ├── ui/                  # Components (consume facades only)
+│   │       ├── application/         # Facades / use cases (signals, orchestration)
+│   │       ├── domain/
+│   │       │   ├── models/          # TypeScript interfaces (no Angular)
+│   │       │   ├── ports/           # Abstract repository contracts
+│   │       │   └── rules/           # Pure business-rule functions
+│   │       ├── infrastructure/
+│   │       │   ├── api/             # HttpClient repository implementations
+│   │       │   ├── storage/         # IndexedDB / localStorage implementations
+│   │       │   └── mappers/         # DTO → domain model transformers
+│   │       └── <feature>.routes.ts  # DI wiring + lazy routes
+│   ├── shared/
+│   │   ├── domain/models/           # Cross-feature domain models
+│   │   ├── infrastructure/
+│   │   │   ├── http/                # Base HTTP helpers
+│   │   │   └── storage/             # Shared storage utilities
+│   │   └── ui/components/           # Shared UI components
+│   ├── core/
+│   │   ├── auth/                    # Authentication infrastructure
+│   │   └── config/                  # App-wide configuration
+│   ├── app.ts                       # Root component
+│   ├── app.routes.ts                # Top-level routes
+│   ├── app.config.ts                # Client app config
+│   └── app.config.server.ts         # SSR app config
+├── main.ts                          # Client bootstrap
+├── main.server.ts                   # Server bootstrap
+├── server.ts                        # Express SSR server
+├── styles.scss                      # Global styles (Angular Material theme)
+└── index.html                       # App shell
 docs/
-└── features/      # Feature requirement documents
+└── features/                        # Feature requirement documents
 ```
 
 ## License
