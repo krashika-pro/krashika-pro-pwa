@@ -36,16 +36,17 @@ Built with **Angular 20**, **SSR**, and **PWA** capabilities for offline-first, 
 
 ## Tech Stack
 
-| Layer         | Technology             |
-| ------------- | ---------------------- |
-| Framework     | Angular 20             |
-| Rendering     | SSR (`@angular/ssr`)   |
-| UI Components | Angular Material (M3)  |
-| Styling       | SCSS                   |
-| Language      | TypeScript             |
-| Runtime       | Node.js + Express 5    |
-| PWA           | Service Workers (ngsw) |
-| Architecture  | Clean Architecture     |
+| Layer         | Technology                    |
+| ------------- | ----------------------------- |
+| Framework     | Angular 20                    |
+| Rendering     | SSR (`@angular/ssr`)          |
+| UI Components | Angular Material (M3)         |
+| Styling       | SCSS                          |
+| Language      | TypeScript                    |
+| Runtime       | Node.js + Express 5           |
+| PWA           | Service Workers (ngsw)        |
+| Architecture  | Clean Architecture            |
+| Routing       | Lazy loading (`loadChildren`) |
 
 ## Getting Started
 
