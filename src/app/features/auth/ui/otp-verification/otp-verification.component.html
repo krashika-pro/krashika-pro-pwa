@@ -1,0 +1,55 @@
+<div class="auth-page">
+     <header class="auth-topbar">
+          <button mat-icon-button (click)="onBack()" aria-label="Go back">
+               <mat-icon>arrow_back</mat-icon>
+          </button>
+     </header>
+
+     <main class="auth-card">
+          <div class="auth-card__icon">
+               <mat-icon class="lock-icon">lock_outline</mat-icon>
+          </div>
+
+          <h2 class="auth-card__title">Verify Mobile Number</h2>
+          <p class="auth-card__subtitle">
+               Enter the 6-digit OTP sent to
+               <strong>+91&nbsp;{{ mobileNumber }}</strong>
+          </p>
+
+          <form class="auth-form" (ngSubmit)="onVerify()" novalidate>
+               <mat-form-field appearance="outline" class="full-width otp-field">
+                    <mat-label>6-digit OTP</mat-label>
+                    <input matInput [formControl]="otpControl" type="tel" inputmode="numeric" maxlength="6"
+                         placeholder="——————" autocomplete="one-time-code" aria-label="Enter 6-digit OTP" />
+                    @if (otpError()) {
+                    <mat-error>{{ otpError() }}</mat-error>
+                    }
+                    @if (otpControl.hasError('pattern') && otpControl.touched) {
+                    <mat-error>Enter a valid 6-digit OTP</mat-error>
+                    }
+               </mat-form-field>
+
+               <button mat-flat-button type="submit" class="full-width cta-btn" [disabled]="!isVerifyEnabled()"
+                    aria-label="Verify OTP">
+                    Verify
+               </button>
+          </form>
+
+          <div class="resend-section">
+               @if (!isResendEnabled()) {
+               <p class="resend-countdown">
+                    Resend OTP in <strong>{{ resendCountdown() }}s</strong>
+               </p>
+               } @else {
+               <button mat-button type="button" class="resend-btn" [disabled]="!isResendButtonEnabled()"
+                    (click)="onResendOtp()" aria-label="Resend OTP">
+                    Resend OTP
+               </button>
+               }
+          </div>
+     </main>
+
+     @if (isLoading()) {
+     <app-loading-overlay label="Verifying OTP…" />
+     }
+</div>

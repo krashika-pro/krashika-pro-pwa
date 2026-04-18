@@ -1,0 +1,45 @@
+<div class="auth-page">
+  <header class="auth-header">
+    <div class="brand">
+      <img src="/icons/icon-192x192.png" alt="Krishika Pro logo" class="brand__logo" />
+      <h1 class="brand__name">Krishika Pro</h1>
+    </div>
+    <p class="brand__tagline">Smart farming for better harvests</p>
+  </header>
+
+  <main class="auth-card">
+    <h2 class="auth-card__title">Welcome back</h2>
+    <p class="auth-card__subtitle">Enter your mobile number to sign in</p>
+
+    <form class="auth-form" (ngSubmit)="onSendOtp()" novalidate>
+      <mat-form-field appearance="outline" class="full-width">
+        <mat-label>Mobile Number</mat-label>
+        <span matTextPrefix>+91&nbsp;</span>
+        <input matInput [formControl]="mobileControl" type="tel" inputmode="numeric" placeholder="9876543210"
+          maxlength="10" autocomplete="tel-national" aria-label="10-digit Indian mobile number" />
+        @if (mobileControl.hasError('required') && mobileControl.touched) {
+        <mat-error>Mobile number is required</mat-error>
+        }
+        @if (mobileControl.hasError('pattern') && mobileControl.touched) {
+        <mat-error>Enter a valid 10-digit mobile number</mat-error>
+        }
+      </mat-form-field>
+
+      <button mat-flat-button type="submit" class="full-width cta-btn" [disabled]="!isSendOtpEnabled()"
+        aria-label="Send OTP to entered mobile number">
+        Send OTP
+      </button>
+    </form>
+
+    <footer class="auth-footer">
+      <span>By continuing, you agree to our</span>
+      <a href="/terms" class="auth-footer__link">Terms of Service</a>
+      <span>&amp;</span>
+      <a href="/privacy" class="auth-footer__link">Privacy Policy</a>
+    </footer>
+  </main>
+
+  @if (isLoading()) {
+  <app-loading-overlay label="Sending OTP…" />
+  }
+</div>

@@ -1,0 +1,63 @@
+:host {
+     display: block;
+}
+
+.auth-page {
+     display: flex;
+     flex-direction: column;
+     min-height: 100dvh;
+     background: #fafdf6;
+}
+
+.auth-topbar {
+     display: flex;
+     align-items: center;
+     padding: 8px;
+     flex-shrink: 0;
+}
+
+.auth-content {
+     flex: 1;
+     display: flex;
+     flex-direction: column;
+     padding: 8px 16px 40px;
+     max-width: 480px;
+     width: 100%;
+     margin: 0 auto;
+}
+
+.auth-hero {
+     margin-bottom: 28px;
+     padding: 0 4px;
+}
+
+.auth-hero__title {
+     font-size: 1.375rem;
+     font-weight: 700;
+     color: #1a1c18;
+     margin: 0 0 6px;
+}
+
+.auth-hero__subtitle {
+     font-size: 0.9rem;
+     color: #49454f;
+     margin: 0;
+}
+
+.auth-form {
+     display: flex;
+     flex-direction: column;
+     gap: 4px;
+}
+
+.full-width {
+     width: 100%;
+}
+
+.cta-btn {
+     height: 52px;
+     font-size: 1rem;
+     font-weight: 600;
+     border-radius: 12px !important;
+     margin-top: 12px;
+}

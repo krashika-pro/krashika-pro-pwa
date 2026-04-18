@@ -1,0 +1,68 @@
+<div class="auth-page">
+     <header class="auth-topbar">
+          <button mat-icon-button (click)="onBack()" aria-label="Go back">
+               <mat-icon>arrow_back</mat-icon>
+          </button>
+     </header>
+
+     <main class="auth-content">
+          <div class="auth-hero">
+               <h2 class="auth-hero__title">Create Your Profile</h2>
+               <p class="auth-hero__subtitle">Tell us a little about yourself to get started</p>
+          </div>
+
+          <form class="auth-form" [formGroup]="registrationForm" (ngSubmit)="onCreateAccount()" novalidate>
+               <!-- Full Name -->
+               <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Full Name</mat-label>
+                    <mat-icon matPrefix>person_outline</mat-icon>
+                    <input matInput formControlName="fullName" type="text" placeholder="e.g. Ramesh Kumar"
+                         autocomplete="name" aria-label="Your full name" />
+                    @if (registrationForm.get('fullName')?.hasError('required') &&
+                    registrationForm.get('fullName')?.touched) {
+                    <mat-error>Full name is required</mat-error>
+                    }
+                    @if (registrationForm.get('fullName')?.hasError('minlength') &&
+                    registrationForm.get('fullName')?.touched) {
+                    <mat-error>Name must be at least 2 characters</mat-error>
+                    }
+               </mat-form-field>
+
+               <!-- Role -->
+               <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>I am a…</mat-label>
+                    <mat-icon matPrefix>badge</mat-icon>
+                    <mat-select formControlName="role" aria-label="Select your role">
+                         @for (option of roleOptions; track option.value) {
+                         <mat-option [value]="option.value">{{ option.label }}</mat-option>
+                         }
+                    </mat-select>
+                    @if (registrationForm.get('role')?.hasError('required') &&
+                    registrationForm.get('role')?.touched) {
+                    <mat-error>Please select your role</mat-error>
+                    }
+               </mat-form-field>
+
+               <!-- Location -->
+               <mat-form-field appearance="outline" class="full-width">
+                    <mat-label>Location</mat-label>
+                    <mat-icon matPrefix>location_on</mat-icon>
+                    <input matInput formControlName="location" type="text" placeholder="e.g. Pune, Maharashtra"
+                         autocomplete="address-level2" aria-label="Your district or city" />
+                    @if (registrationForm.get('location')?.hasError('required') &&
+                    registrationForm.get('location')?.touched) {
+                    <mat-error>Location is required</mat-error>
+                    }
+               </mat-form-field>
+
+               <button mat-flat-button type="submit" class="full-width cta-btn" [disabled]="!isCreateEnabled()"
+                    aria-label="Create account">
+                    Create Account
+               </button>
+          </form>
+     </main>
+
+     @if (isLoading()) {
+     <app-loading-overlay label="Creating account…" />
+     }
+</div>

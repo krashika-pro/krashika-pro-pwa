@@ -1,0 +1,92 @@
+<div class="profile-page">
+     <header class="profile-topbar">
+          <div class="topbar-spacer"></div>
+          <button mat-button class="skip-btn" (click)="onSkip()" type="button">
+               Skip for now
+          </button>
+     </header>
+
+     <main class="profile-content">
+          <div class="profile-hero">
+               <h2 class="profile-hero__title">Complete Your Profile</h2>
+               <p class="profile-hero__subtitle">
+                    This helps us personalise your experience
+               </p>
+          </div>
+
+          <!-- Profile Photo -->
+          <section class="section">
+               <label class="section__label">Profile Photo</label>
+               <div class="photo-uploader">
+                    <button type="button" class="photo-uploader__avatar" (click)="triggerPhotoUpload()"
+                         aria-label="Upload profile photo">
+                         @if (profilePhotoPreviewUrl()) {
+                         <img [src]="profilePhotoPreviewUrl()" alt="Profile photo preview"
+                              class="photo-uploader__preview" />
+                         } @else {
+                         <mat-icon class="photo-uploader__placeholder-icon">person</mat-icon>
+                         }
+                         <span class="photo-uploader__overlay">
+                              <mat-icon>photo_camera</mat-icon>
+                         </span>
+                    </button>
+                    <span class="photo-uploader__hint">Tap to upload photo</span>
+               </div>
+               <input id="photo-input" type="file" accept="image/jpeg,image/png,image/webp" class="sr-only"
+                    (change)="onPhotoSelected($event)" aria-label="Select profile photo" />
+          </section>
+
+          <form class="profile-form" [formGroup]="profileForm" (ngSubmit)="onSave()" novalidate>
+               <!-- Farm Size -->
+               <section class="section">
+                    <label class="section__label">Farm Size / Type</label>
+                    <div class="radio-grid" role="radiogroup" aria-label="Farm size">
+                         @for (option of farmSizeOptions; track option.value) {
+                         <button type="button" class="radio-tile"
+                              [class.radio-tile--selected]="profileForm.get('farmSizeType')?.value === option.value"
+                              (click)="profileForm.get('farmSizeType')?.setValue(option.value)"
+                              [attr.aria-pressed]="profileForm.get('farmSizeType')?.value === option.value">
+                              {{ option.label }}
+                         </button>
+                         }
+                    </div>
+               </section>
+
+               <!-- Crops / Livestock -->
+               <section class="section">
+                    <label class="section__label">Crops / Livestock</label>
+                    <div class="chip-grid" role="group" aria-label="Select crops or livestock">
+                         @for (crop of cropOptions; track crop) {
+                         <button type="button" class="chip" [class.chip--selected]="isCropSelected(crop)"
+                              (click)="toggleCrop(crop)" [attr.aria-pressed]="isCropSelected(crop)">
+                              {{ crop }}
+                         </button>
+                         }
+                    </div>
+               </section>
+
+               <!-- Number of Workers -->
+               <section class="section">
+                    <mat-form-field appearance="outline" class="full-width">
+                         <mat-label>Number of Workers</mat-label>
+                         <mat-icon matPrefix>groups</mat-icon>
+                         <input matInput formControlName="numberOfWorkers" type="tel" inputmode="numeric"
+                              placeholder="e.g. 5" aria-label="Number of farm workers" />
+                         @if (profileForm.get('numberOfWorkers')?.hasError('pattern') &&
+                         profileForm.get('numberOfWorkers')?.touched) {
+                         <mat-error>Enter a valid number</mat-error>
+                         }
+                    </mat-form-field>
+               </section>
+
+               <button mat-flat-button type="submit" class="full-width cta-btn" [disabled]="!isSaveEnabled()"
+                    aria-label="Save profile">
+                    Save Profile
+               </button>
+          </form>
+     </main>
+
+     @if (isLoading()) {
+     <app-loading-overlay label="Saving profile…" />
+     }
+</div>
