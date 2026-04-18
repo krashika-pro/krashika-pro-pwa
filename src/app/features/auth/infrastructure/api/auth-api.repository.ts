@@ -10,10 +10,12 @@ import {
   mapApiUserToUser,
   mapApiVerifyOtpToResult,
 } from '../mappers/auth.mapper';
+import { TokenStorageService } from '../../../../shared/infrastructure/storage/token-storage.service';
 
 @Injectable()
 export class AuthApiRepository extends AuthRepository {
   private readonly http = inject(HttpClient);
+  private readonly tokenStorage = inject(TokenStorageService);
 
   async sendOtp(mobileNumber: string): Promise<void> {
     await firstValueFrom(
@@ -25,13 +27,15 @@ export class AuthApiRepository extends AuthRepository {
     const response = await firstValueFrom(
       this.http.post<ApiVerifyOtpResponseDto>('/api/auth/verify-otp', { mobileNumber, otp }),
     );
+    this.tokenStorage.setToken(response.token);
     return mapApiVerifyOtpToResult(response);
   }
 
   async register(data: RegistrationData): Promise<User> {
     const response = await firstValueFrom(
-      this.http.post<ApiUserDto>('/api/auth/register', data),
+      this.http.post<ApiUserDto & { token: string }>('/api/auth/register', data),
     );
+    this.tokenStorage.setToken(response.token);
     return mapApiUserToUser(response);
   }
 
@@ -65,6 +69,8 @@ export class AuthApiRepository extends AuthRepository {
       await firstValueFrom(this.http.post<void>('/api/auth/logout', {}));
     } catch {
       // Swallow — logout clears local state regardless
+    } finally {
+      this.tokenStorage.clearToken();
     }
   }
 }

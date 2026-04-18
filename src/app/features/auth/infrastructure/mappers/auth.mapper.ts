@@ -14,6 +14,7 @@ export interface ApiUserDto {
 export interface ApiVerifyOtpResponseDto {
   is_new_user: boolean;
   user: ApiUserDto | null;
+  token: string;
 }
 
 export function mapApiUserToUser(dto: ApiUserDto): User {

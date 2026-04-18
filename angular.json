@@ -65,7 +65,8 @@
               "buildTarget": "krishika-pro-pwa:build:production"
             },
             "development": {
-              "buildTarget": "krishika-pro-pwa:build:development"
+              "buildTarget": "krishika-pro-pwa:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
