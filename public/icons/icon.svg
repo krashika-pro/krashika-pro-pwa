@@ -1,0 +1,173 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+     <defs>
+          <!-- Earthy gradient for the background circle -->
+          <radialGradient id="bgGrad" cx="50%" cy="50%" r="50%">
+               <stop offset="0%" stop-color="#2E7D32" />
+               <stop offset="100%" stop-color="#1B5E20" />
+          </radialGradient>
+          <!-- Gold gradient for plow petals -->
+          <linearGradient id="petalGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+               <stop offset="0%" stop-color="#FFD54F" />
+               <stop offset="50%" stop-color="#FFC107" />
+               <stop offset="100%" stop-color="#FF8F00" />
+          </linearGradient>
+          <!-- Inner ring gradient -->
+          <radialGradient id="innerRingGrad" cx="50%" cy="50%" r="50%">
+               <stop offset="0%" stop-color="#A5D6A7" />
+               <stop offset="100%" stop-color="#388E3C" />
+          </radialGradient>
+          <!-- Leaf gradient -->
+          <linearGradient id="leafGrad" x1="0%" y1="0%" x2="50%" y2="100%">
+               <stop offset="0%" stop-color="#81C784" />
+               <stop offset="50%" stop-color="#43A047" />
+               <stop offset="100%" stop-color="#2E7D32" />
+          </linearGradient>
+          <!-- Leaf vein highlight -->
+          <linearGradient id="veinGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+               <stop offset="0%" stop-color="#C8E6C9" stop-opacity="0.8" />
+               <stop offset="100%" stop-color="#66BB6A" stop-opacity="0.3" />
+          </linearGradient>
+     </defs>
+
+     <!-- Safe zone background for maskable icon -->
+     <rect width="512" height="512" fill="#1B5E20" rx="0" />
+
+     <!-- Main circular background -->
+     <circle cx="256" cy="256" r="240" fill="url(#bgGrad)" />
+
+     <!-- Outer decorative ring -->
+     <circle cx="256" cy="256" r="230" fill="none" stroke="#A5D6A7" stroke-width="2"
+          stroke-opacity="0.4" />
+
+     <!-- Mandala: 12 plow/spade-blade petals (outer ring) -->
+     <g opacity="0.95">
+          <!-- Each petal is a spade/plow blade shape pointing outward -->
+          <g transform="rotate(0, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(30, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(60, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(90, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(120, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(150, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(180, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(210, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(240, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(270, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(300, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+          <g transform="rotate(330, 256, 256)">
+               <path
+                    d="M256,80 C270,110 285,140 280,170 C275,190 260,195 256,195 C252,195 237,190 232,170 C227,140 242,110 256,80Z"
+                    fill="url(#petalGrad)" stroke="#E65100" stroke-width="1" stroke-opacity="0.3" />
+          </g>
+     </g>
+
+     <!-- Inner decorative dots between petals -->
+     <g opacity="0.5">
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(15, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(45, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(75, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(105, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(135, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(165, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(195, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(225, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(255, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(285, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(315, 256, 256)" />
+          <circle cx="256" cy="100" r="3" fill="#FFF9C4" transform="rotate(345, 256, 256)" />
+     </g>
+
+     <!-- Inner mandala ring -->
+     <circle cx="256" cy="256" r="100" fill="url(#innerRingGrad)" stroke="#1B5E20" stroke-width="3" />
+     <circle cx="256" cy="256" r="90" fill="#1B5E20" />
+
+     <!-- Small inner petal pattern (8 petals) -->
+     <g opacity="0.6">
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7" transform="rotate(0, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7" transform="rotate(45, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7" transform="rotate(90, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7"
+               transform="rotate(135, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7"
+               transform="rotate(180, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7"
+               transform="rotate(225, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7"
+               transform="rotate(270, 256, 256)" />
+          <ellipse cx="256" cy="195" rx="10" ry="25" fill="#A5D6A7"
+               transform="rotate(315, 256, 256)" />
+     </g>
+
+     <!-- Center leaf -->
+     <g transform="translate(256, 256)">
+          <!-- Leaf body - slightly tilted for natural feel -->
+          <path
+               d="M0,-65 C25,-50 40,-20 40,5 C40,30 25,55 0,70 C-25,55 -40,30 -40,5 C-40,-20 -25,-50 0,-65Z"
+               fill="url(#leafGrad)" stroke="#2E7D32" stroke-width="1.5" />
+          <!-- Central vein -->
+          <line x1="0" y1="-60" x2="0" y2="65" stroke="url(#veinGrad)" stroke-width="2.5"
+               stroke-linecap="round" />
+          <!-- Side veins -->
+          <line x1="0" y1="-35" x2="22" y2="-15" stroke="url(#veinGrad)" stroke-width="1.5"
+               stroke-linecap="round" />
+          <line x1="0" y1="-35" x2="-22" y2="-15" stroke="url(#veinGrad)" stroke-width="1.5"
+               stroke-linecap="round" />
+          <line x1="0" y1="-10" x2="30" y2="10" stroke="url(#veinGrad)" stroke-width="1.5"
+               stroke-linecap="round" />
+          <line x1="0" y1="-10" x2="-30" y2="10" stroke="url(#veinGrad)" stroke-width="1.5"
+               stroke-linecap="round" />
+          <line x1="0" y1="15" x2="25" y2="35" stroke="url(#veinGrad)" stroke-width="1.5"
+               stroke-linecap="round" />
+          <line x1="0" y1="15" x2="-25" y2="35" stroke="url(#veinGrad)" stroke-width="1.5"
+               stroke-linecap="round" />
+          <!-- Leaf tip highlight -->
+          <ellipse cx="0" cy="-55" rx="5" ry="8" fill="#C8E6C9" opacity="0.4" />
+     </g>
+
+     <!-- Outer fine ring -->
+     <circle cx="256" cy="256" r="238" fill="none" stroke="#FFD54F" stroke-width="1.5"
+          stroke-opacity="0.5" />
+</svg>
