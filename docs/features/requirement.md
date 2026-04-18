@@ -1,26 +1,26 @@
 # UI Requirements — User Authentication & Registration (Phase 1)
 
 > Derived from: _User Authentication & Registration Feature Document (Phase 1)_
-> Platform: Android · Jetpack Compose + Material3
+> Platform: Web (PWA) · Angular + Angular Material
 
 ---
 
-## 1. Screens
+## 1. Pages (Components)
 
-| #   | Screen Name               | Route                | Description                                              |
-| --- | ------------------------- | -------------------- | -------------------------------------------------------- |
-| 1   | `LoginScreen`             | `login`              | Entry point — user enters mobile number and requests OTP |
-| 2   | `OtpVerificationScreen`   | `otp_verification`   | OTP input to verify the mobile number                    |
-| 3   | `RegistrationScreen`      | `registration`       | Collects mandatory profile fields for new users          |
-| 4   | `ProfileCompletionScreen` | `profile_completion` | Optional fields after successful registration            |
-
----
-
-## 2. Screen-by-Screen UI Specification
+| #   | Component Name               | Route                       | Description                                              |
+| --- | ---------------------------- | --------------------------- | -------------------------------------------------------- |
+| 1   | `LoginComponent`             | `/login`                    | Entry point — user enters mobile number and requests OTP |
+| 2   | `OtpVerificationComponent`   | `/otp-verification/:mobile` | OTP input to verify the mobile number                    |
+| 3   | `RegistrationComponent`      | `/registration`             | Collects mandatory profile fields for new users          |
+| 4   | `ProfileCompletionComponent` | `/profile-completion`       | Optional fields after successful registration            |
 
 ---
 
-### 2.1 LoginScreen
+## 2. Component-by-Component UI Specification
+
+---
+
+### 2.1 LoginComponent
 
 **Purpose:** Collect the user's mobile number and send an OTP for verification.
 
@@ -28,7 +28,7 @@
 
 - App logo / branding at top
 - Tagline / welcome text
-- Mobile Number input field (`+91` prefix, numeric keyboard, 10-digit)
+- Mobile Number input field (`+91` prefix, `inputmode="numeric"`, 10-digit)
 - **"Send OTP"** primary button (disabled until a valid 10-digit number is entered)
 - Footer: terms & privacy policy links
 
@@ -41,47 +41,41 @@
 | Loading | Overlay progress indicator; field and button disabled           |
 | Error   | Snackbar with error message                                     |
 
-#### UiState
+#### Component State (Signals)
 
-```kotlin
-data class LoginUiState(
-    val mobileNumber: String = "",
-    val mobileNumberError: String? = null,
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null
-)
-```
-
-#### UiEvent
-
-```kotlin
-sealed class LoginUiEvent {
-    data class MobileNumberChanged(val value: String) : LoginUiEvent()
-    object SendOtp : LoginUiEvent()
+```typescript
+interface LoginState {
+  mobileNumber: string;
+  mobileNumberError: string | null;
+  isLoading: boolean;
+  errorMessage: string | null;
 }
 ```
 
-#### UiEffect
+#### Actions
 
-```kotlin
-sealed class LoginUiEffect {
-    data class NavigateToOtpVerification(val mobileNumber: String) : LoginUiEffect()
-    data class ShowSnackbar(val message: String) : LoginUiEffect()
-}
+```typescript
+type LoginAction = { type: "MOBILE_NUMBER_CHANGED"; value: string } | { type: "SEND_OTP" };
+```
+
+#### Effects
+
+```typescript
+type LoginEffect = { type: "NAVIGATE_TO_OTP_VERIFICATION"; mobileNumber: string } | { type: "SHOW_SNACKBAR"; message: string };
 ```
 
 ---
 
-### 2.2 OtpVerificationScreen
+### 2.2 OtpVerificationComponent
 
 **Purpose:** Verify the user's mobile number via OTP.
 
-**Trigger:** User successfully submits a valid mobile number on `LoginScreen`.
+**Trigger:** User successfully submits a valid mobile number on `LoginComponent`.
 
 #### Layout
 
-- Back navigation icon
-- Screen title: "Verify Mobile Number"
+- Back navigation icon (or browser back)
+- Page title: "Verify Mobile Number"
 - Instruction text: "Enter the OTP sent to +91 XXXXXXXXXX"
 - OTP input field (6-digit, segmented or single field)
 - **"Verify"** primary button
@@ -97,43 +91,35 @@ sealed class LoginUiEffect {
 | Loading         | Progress indicator; inputs and buttons disabled  |
 | ResendAvailable | "Resend OTP" becomes enabled after timer expires |
 | Error           | Inline error under OTP field ("Invalid OTP")     |
-| Success         | Navigate to next screen                          |
+| Success         | Navigate to next page                            |
 
-#### UiState
+#### Component State (Signals)
 
-```kotlin
-data class OtpVerificationUiState(
-    val otpValue: String = "",
-    val isLoading: Boolean = false,
-    val isResendEnabled: Boolean = false,
-    val resendCountdownSeconds: Int = 30,
-    val errorMessage: String? = null
-)
-```
-
-#### UiEvent
-
-```kotlin
-sealed class OtpVerificationUiEvent {
-    data class OtpChanged(val otp: String) : OtpVerificationUiEvent()
-    object VerifyOtp : OtpVerificationUiEvent()
-    object ResendOtp : OtpVerificationUiEvent()
+```typescript
+interface OtpVerificationState {
+  otpValue: string;
+  isLoading: boolean;
+  isResendEnabled: boolean;
+  resendCountdownSeconds: number;
+  errorMessage: string | null;
 }
 ```
 
-#### UiEffect
+#### Actions
 
-```kotlin
-sealed class OtpVerificationUiEffect {
-    object NavigateToRegistration : OtpVerificationUiEffect()
-    object NavigateToDashboard : OtpVerificationUiEffect()
-    data class ShowSnackbar(val message: String) : OtpVerificationUiEffect()
-}
+```typescript
+type OtpVerificationAction = { type: "OTP_CHANGED"; otp: string } | { type: "VERIFY_OTP" } | { type: "RESEND_OTP" };
+```
+
+#### Effects
+
+```typescript
+type OtpVerificationEffect = { type: "NAVIGATE_TO_REGISTRATION" } | { type: "NAVIGATE_TO_DASHBOARD" } | { type: "SHOW_SNACKBAR"; message: string };
 ```
 
 ---
 
-### 2.3 RegistrationScreen
+### 2.3 RegistrationComponent
 
 **Purpose:** Collect mandatory profile fields for a first-time user.
 
@@ -141,13 +127,13 @@ sealed class OtpVerificationUiEffect {
 
 #### Layout
 
-- Back navigation icon
-- Screen title: "Create Your Profile"
+- Back navigation icon (or browser back)
+- Page title: "Create Your Profile"
 - Progress indicator (step X of Y — optional)
 - Form fields (in order):
-  1. **Full Name** — text field, name keyboard
-  2. **Role** — dropdown / bottom-sheet selector with predefined options
-  3. **Location** — text field with search/autocomplete OR district + state dropdowns
+  1. **Full Name** — text input
+  2. **Role** — dropdown (`<select>`) or dialog selector with predefined options
+  3. **Location** — text input with autocomplete OR district + state dropdowns
 - **"Create Account"** primary CTA button (disabled until all fields valid)
 
 #### Role Options (predefined)
@@ -176,45 +162,36 @@ sealed class OtpVerificationUiEffect {
 | Error      | Snackbar for server-side errors                          |
 | Success    | Navigate to Dashboard                                    |
 
-#### UiState
+#### Component State (Signals)
 
-```kotlin
-data class RegistrationUiState(
-    val fullName: String = "",
-    val role: String = "",
-    val location: String = "",
-    val fullNameError: String? = null,
-    val roleError: String? = null,
-    val locationError: String? = null,
-    val isLoading: Boolean = false,
-    val isFormValid: Boolean = false
-)
-```
-
-#### UiEvent
-
-```kotlin
-sealed class RegistrationUiEvent {
-    data class FullNameChanged(val value: String) : RegistrationUiEvent()
-    data class RoleSelected(val role: String) : RegistrationUiEvent()
-    data class LocationChanged(val value: String) : RegistrationUiEvent()
-    object Submit : RegistrationUiEvent()
+```typescript
+interface RegistrationState {
+  fullName: string;
+  role: string;
+  location: string;
+  fullNameError: string | null;
+  roleError: string | null;
+  locationError: string | null;
+  isLoading: boolean;
+  isFormValid: boolean;
 }
 ```
 
-#### UiEffect
+#### Actions
 
-```kotlin
-sealed class RegistrationUiEffect {
-    object NavigateToDashboard : RegistrationUiEffect()
-    object NavigateToProfileCompletion : RegistrationUiEffect()
-    data class ShowSnackbar(val message: String) : RegistrationUiEffect()
-}
+```typescript
+type RegistrationAction = { type: "FULL_NAME_CHANGED"; value: string } | { type: "ROLE_SELECTED"; role: string } | { type: "LOCATION_CHANGED"; value: string } | { type: "SUBMIT" };
+```
+
+#### Effects
+
+```typescript
+type RegistrationEffect = { type: "NAVIGATE_TO_DASHBOARD" } | { type: "NAVIGATE_TO_PROFILE_COMPLETION" } | { type: "SHOW_SNACKBAR"; message: string };
 ```
 
 ---
 
-### 2.4 ProfileCompletionScreen
+### 2.4 ProfileCompletionComponent
 
 **Purpose:** Optionally collect additional profile information post-registration.
 
@@ -223,13 +200,13 @@ sealed class RegistrationUiEffect {
 #### Layout
 
 - Back / Skip navigation options (top bar)
-- Screen title: "Complete Your Profile"
+- Page title: "Complete Your Profile"
 - Subtitle: "This helps us personalise your experience"
 - Form fields:
   1. **Farm Size / Type** — radio group or dropdown (Small-scale, Mid-scale, Large-scale, Other)
-  2. **Crops / Livestock** — multi-select chip group or bottom-sheet multi-select
-  3. **Number of Workers** — numeric text field
-  4. **Profile Photo** — circular avatar with "Upload Photo" tap area (camera / gallery chooser)
+  2. **Crops / Livestock** — multi-select chip group or dialog multi-select
+  3. **Number of Workers** — numeric text input (`inputmode="numeric"`)
+  4. **Profile Photo** — circular avatar with "Upload Photo" click area (file input)
 - **"Save"** primary CTA button
 - **"Skip for now"** text button
 
@@ -242,40 +219,29 @@ sealed class RegistrationUiEffect {
 | Error   | Snackbar for upload or save errors          |
 | Success | Navigate to Dashboard                       |
 
-#### UiState
+#### Component State (Signals)
 
-```kotlin
-data class ProfileCompletionUiState(
-    val farmSizeType: String = "",
-    val crops: List<String> = emptyList(),
-    val numberOfWorkers: String = "",
-    val profilePhotoUri: String? = null,
-    val isLoading: Boolean = false,
-    val errorMessage: String? = null
-)
-```
-
-#### UiEvent
-
-```kotlin
-sealed class ProfileCompletionUiEvent {
-    data class FarmSizeSelected(val value: String) : ProfileCompletionUiEvent()
-    data class CropsSelected(val crops: List<String>) : ProfileCompletionUiEvent()
-    data class WorkersChanged(val value: String) : ProfileCompletionUiEvent()
-    data class PhotoSelected(val uri: String) : ProfileCompletionUiEvent()
-    object Save : ProfileCompletionUiEvent()
-    object Skip : ProfileCompletionUiEvent()
+```typescript
+interface ProfileCompletionState {
+  farmSizeType: string;
+  crops: string[];
+  numberOfWorkers: string;
+  profilePhotoUrl: string | null;
+  isLoading: boolean;
+  errorMessage: string | null;
 }
 ```
 
-#### UiEffect
+#### Actions
 
-```kotlin
-sealed class ProfileCompletionUiEffect {
-    object NavigateToDashboard : ProfileCompletionUiEffect()
-    object OpenImagePicker : ProfileCompletionUiEffect()
-    data class ShowSnackbar(val message: String) : ProfileCompletionUiEffect()
-}
+```typescript
+type ProfileCompletionAction = { type: "FARM_SIZE_SELECTED"; value: string } | { type: "CROPS_SELECTED"; crops: string[] } | { type: "WORKERS_CHANGED"; value: string } | { type: "PHOTO_SELECTED"; file: File } | { type: "SAVE" } | { type: "SKIP" };
+```
+
+#### Effects
+
+```typescript
+type ProfileCompletionEffect = { type: "NAVIGATE_TO_DASHBOARD" } | { type: "OPEN_FILE_PICKER" } | { type: "SHOW_SNACKBAR"; message: string };
 ```
 
 ---
@@ -286,55 +252,71 @@ sealed class ProfileCompletionUiEffect {
 App Launch
     │
     ▼
-LoginScreen  (enter mobile number → Send OTP)
+LoginComponent  (enter mobile number → Send OTP)
     │
     ▼
-OtpVerificationScreen  (enter OTP → Verify)
+OtpVerificationComponent  (enter OTP → Verify)
     │
     ▼
 [User exists?]
     ├── Yes ──► Dashboard
-    └── No ───► RegistrationScreen
+    └── No ───► RegistrationComponent
                         │
                 [Account Created]
                         │
                         ▼
-               ProfileCompletionScreen
+               ProfileCompletionComponent
                  ├── [Save / Skip]
                         │
                         ▼
                    Dashboard
 ```
 
-### Navigation Routes (`Screen.kt`)
+### Route Configuration (`app.routes.ts`)
 
-```kotlin
-sealed class Screen(val route: String) {
-    object Login : Screen("login")
-    object OtpVerification : Screen("otp_verification/{mobileNumber}") {
-        fun createRoute(mobileNumber: String) = "otp_verification/$mobileNumber"
-    }
-    object Registration : Screen("registration")
-    object ProfileCompletion : Screen("profile_completion")
-    object Dashboard : Screen("dashboard")
-}
+```typescript
+import { Routes } from "@angular/router";
+
+export const routes: Routes = [
+  { path: "", redirectTo: "login", pathMatch: "full" },
+  {
+    path: "login",
+    loadComponent: () => import("./auth/login/login.component").then((m) => m.LoginComponent),
+  },
+  {
+    path: "otp-verification/:mobile",
+    loadComponent: () => import("./auth/otp-verification/otp-verification.component").then((m) => m.OtpVerificationComponent),
+  },
+  {
+    path: "registration",
+    loadComponent: () => import("./auth/registration/registration.component").then((m) => m.RegistrationComponent),
+  },
+  {
+    path: "profile-completion",
+    loadComponent: () => import("./auth/profile-completion/profile-completion.component").then((m) => m.ProfileCompletionComponent),
+  },
+  {
+    path: "dashboard",
+    loadComponent: () => import("./dashboard/dashboard.component").then((m) => m.DashboardComponent),
+  },
+];
 ```
 
 ---
 
 ## 4. Shared / Reusable Components
 
-| Component                 | Used In                 | Notes                               |
-| ------------------------- | ----------------------- | ----------------------------------- |
-| `PrimaryButton`           | All screens             | Full-width, disabled state support  |
-| `SecondaryTextButton`     | OTP, Profile Completion | Less prominent action               |
-| `KrishikaTextField`       | Login, Registration     | Outline style, inline error support |
-| `MobileNumberField`       | LoginScreen             | Outline style with `+91` prefix     |
-| `OtpInputField`           | OtpVerificationScreen   | 6-digit segmented input             |
-| `RoleSelectorBottomSheet` | RegistrationScreen      | Bottom sheet with radio options     |
-| `MultiSelectChipGroup`    | ProfileCompletionScreen | Crop / Livestock selection          |
-| `ProfilePhotoUploader`    | ProfileCompletionScreen | Circular, tap-to-upload             |
-| `LoadingOverlay`          | All screens             | Full-screen dimmed spinner          |
+| Component                    | Used In                    | Notes                                |
+| ---------------------------- | -------------------------- | ------------------------------------ |
+| `PrimaryButtonComponent`     | All pages                  | Full-width, disabled state support   |
+| `SecondaryButtonComponent`   | OTP, Profile Completion    | Less prominent action                |
+| `KrishikaInputComponent`     | Login, Registration        | Outline style, inline error support  |
+| `MobileNumberInputComponent` | LoginComponent             | Outline style with `+91` prefix      |
+| `OtpInputComponent`          | OtpVerificationComponent   | 6-digit segmented input              |
+| `RoleSelectorComponent`      | RegistrationComponent      | Dialog / dropdown with radio options |
+| `MultiSelectChipComponent`   | ProfileCompletionComponent | Crop / Livestock selection           |
+| `PhotoUploaderComponent`     | ProfileCompletionComponent | Circular, click-to-upload            |
+| `LoadingOverlayComponent`    | All pages                  | Full-screen dimmed spinner           |
 
 ---
 
@@ -343,7 +325,7 @@ sealed class Screen(val route: String) {
 | Error Scenario                | UI Response                                         |
 | ----------------------------- | --------------------------------------------------- |
 | Invalid OTP                   | Inline error under OTP field                        |
-| Invalid / unregistered mobile | Snackbar on LoginScreen                             |
+| Invalid / unregistered mobile | Snackbar on LoginComponent                          |
 | Mobile already registered     | Navigate to OTP verification (existing user flow)   |
 | Network failure               | Snackbar: "No internet connection. Please retry."   |
 | Server error (5xx)            | Snackbar: "Something went wrong. Please try again." |
@@ -357,6 +339,8 @@ sealed class Screen(val route: String) {
 - OTP login uses **mobile number + OTP** — no Google / social sign-in
 - OTP delivery depends on **OTP service provider** integration
 - After OTP verification the backend responds with whether the user is new (→ Registration) or existing (→ Dashboard)
-- Profile photo upload to backend storage (URI passed via UiEvent; upload handled in ViewModel/UseCase)
-- All authentication tokens stored securely (DataStore / EncryptedSharedPreferences — no plain SharedPreferences)
-- Mobile number is passed as a navigation argument from `LoginScreen` to `OtpVerificationScreen` so the instruction text can display the number
+- Profile photo upload to backend storage (File passed via action; upload handled in the service layer)
+- All authentication tokens stored securely (HttpOnly cookies or encrypted storage — no plain `localStorage` for tokens)
+- Mobile number is passed as a route parameter from `LoginComponent` to `OtpVerificationComponent` so the instruction text can display the number
+- Auth guards protect dashboard and profile-completion routes from unauthenticated access
+- Lazy-loaded standalone components for each route to optimise bundle size
